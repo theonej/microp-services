@@ -1,0 +1,24 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handlers.js",
+  "scripts": {
+    "test": "jest ./__tests__/unit  --setupFiles dotenv/config",
+    "int": "jest ./__tests__/integration --setupFiles dotenv/config",
+    "test:single": "jest",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "server:debug": "nodemon --inspect server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^19.2.0",
+    "aws-sdk": "^2.719.0",
+    "dotenv": "^8.2.0",
+    "tplink-cloud-api": "^0.7.0",
+    "uuid": "^3.1.0"
+  }
+}

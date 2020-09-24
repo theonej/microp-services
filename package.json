@@ -1,0 +1,21 @@
+{
+  "name": "microp-services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:single": "jest",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "server:debug": "nodemon --inspect server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-crt": "^1.1.10",
+    "tplink-cloud-api": "^0.7.0",
+    "tplink-smarthome-api": "^2.0.0",
+    "uuid": "^8.3.0"
+  }
+}
