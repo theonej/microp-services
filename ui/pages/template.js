@@ -1,24 +1,23 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import Cookies from 'cookies';
 
 const auth = require('../providers/auth');
 
-function Template(props){
+const Template = (props)=>{
     
     const {authCookie, redirectLocation} = props;
-
+    
     const router = useRouter();
     const path = router.asPath;
 
     const userInfo = auth.authenticateUser(authCookie, path);
     console.info(userInfo);
-    
+
     if(! userInfo.authenticated)
     {
         console.info(`redirecting to ${redirectLocation}`);
         try{
-           // window.location = redirectLocation;
+            window.location = redirectLocation;
         }catch(e){/*noop*/}
     }
 
@@ -37,24 +36,15 @@ function Template(props){
 
                 body, html{
                     font-family: "Proxima Nova", system-ui, sans-serif;
-                    background-color: #efefef;
+                    background-color: #fff;
                     height:100%;
                     margin-top:10px;
                 }
 
-                .layout {
-                    padding-top:10px;
-                    height:100%;
-                    display:grid;
-                    align-items:center;
-                    justify-content:center;
-                }
+                .my-card-content {
+                    padding: 16px;
+                  }
 
-                .main-container{
-                    padding:45px;
-                    background:#fefefe;
-                    border:solid 1px #bebebe;
-                }
             `}</style>
         </div>
     )
@@ -66,7 +56,7 @@ Template.getInitialProps = async(ctx) =>{
     const cookies = new Cookies(req, res);
     const authCookie = cookies.get('microp-auth');
     const redirectLocation = process.env.REDIRECT_LOCATION;
-
+    
     return {
         authCookie,
         redirectLocation
