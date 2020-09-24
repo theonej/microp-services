@@ -1,3 +1,5 @@
+const profileRepo = require('./repository/dynamoProfileRepository');
+
 exports.getProfile = async (profileId)=>{
-    return {};
+    return profileRepo.getProfile(profileId);
 };

@@ -8,7 +8,7 @@ const REGION = 'us-east-1';
 exports.setProfile = async(profile)=>{
     const dynamo = initDynamo();
 
-    profile.profileId = profile.profileId = uuid();
+    profile.profileId = profile.profileId || uuid();
 
     const request = {
         TableName:TABLE_NAME,

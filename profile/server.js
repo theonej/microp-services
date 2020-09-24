@@ -9,6 +9,7 @@ const server = hapi.server({
 });
 
 const registerRoutes = async()=>{
+    
     server.route({
         method: 'GET',
         path: '/api/profile/{profileId}',
