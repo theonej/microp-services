@@ -1,8 +1,25 @@
 
+.mainPage{
+  padding:15px;
+}
+
+.mainPage h2{
+  font-weight: 200;
+}
+
 .rackList{
     list-style: none;
   }
 
 .rackControls{
   list-style:none;
+}
+
+.rackCards{
+  padding:25px;
+}
+
+.manualControls{
+  border-right:solid 1px #cfcfcf;
+  width:auto;
 }

@@ -18,6 +18,8 @@
     "@hapi/hapi": "^19.2.0",
     "aws-sdk": "^2.719.0",
     "dotenv": "^8.2.0",
+    "got": "^11.7.0",
+    "node-fetch": "^2.6.1",
     "tplink-cloud-api": "^0.7.0",
     "uuid": "^3.1.0"
   }

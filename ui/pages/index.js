@@ -13,41 +13,47 @@ const Home = (props)=> {
   const {profile} = props;
 
   return (
-    <div>
+    <div className={styles.mainPage}>
       <Head>
         <title>MiCrop - System Management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        MiCrop
-      </main>
       
-      <Card>
+      <h2>MiCrop Admin Panel</h2>
+      
+      
+      <Card className={styles.rackCards}>
         <List>
+
           {profile.racks.map(rack=>{
             return(
               <Fragment>
+
                  {rack.name}
+
                 <ListItem>
-                  <List>
+
+                  <List className={styles.manualControls}>
                     {rack.controls.map(control=>{
                       return(
+
                         <ListItem>
                           <div>
                             <label>{control.name}</label>
                             <Switch color="primary" defaultChecked={control.poweredOn}></Switch>
                           </div>
                         </ListItem>
+                      
                       );
                     })}
+                  
                   </List>
                 </ListItem>
               </Fragment>
-             
             );
           })}
-          
+
           </List>
         </Card>
     </div>
