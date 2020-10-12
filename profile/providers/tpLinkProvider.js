@@ -52,12 +52,12 @@ exports.getDevices = async (token) => {
     return deviceInfo.result.deviceList;
 };
 
-exports.getDeviceDetails = async(deviceId, token)=>{
+exports.getDeviceDetails = async (deviceId, token) => {
     const request = {
-        method:"passthrough",
+        method: "passthrough",
         params: {
-            "deviceId":deviceId,
-            "requestData":"{\"system\":{\"get_sysinfo\":null}}}"
+            "deviceId": deviceId,
+            "requestData": "{\"system\":{\"get_sysinfo\":null}}}"
         }
     };
 
@@ -74,36 +74,51 @@ exports.getDeviceDetails = async(deviceId, token)=>{
     return JSON.parse(deviceDetails.result.responseData).system.get_sysinfo;
 };
 
-exports.turnChildDevicesOn = async(deviceId, children, token)=>{
+exports.turnChildDevicesOn = async (deviceId, children, token) => {
     return this.setDeviceRelayState(deviceId, children, 1, token);
 };
 
 
-exports.turnChildDevicesOff = async(deviceId, children, token)=>{
+exports.turnChildDevicesOff = async (deviceId, children, token) => {
     return this.setDeviceRelayState(deviceId, children, 0, token);
 };
 
-exports.setDeviceRelayState = async(deviceId, children, relayState, token)=>{
-    const childIds = children.map((child)=>{
+exports.setChildDeviceStatuses = async (deviceId, children, token) => {
+    const onChildren = children.filter((child) => {
+        return child.status === 1;
+    })
+
+    const offChildren = children.filter((child) => {
+        return child.status === 0;
+    })
+
+    await this.setDeviceRelayState(deviceId, onChildren, 1, token);
+    await this.setDeviceRelayState(deviceId, offChildren, 0, token);
+
+    return true;
+};
+
+exports.setDeviceRelayState = async (deviceId, children, relayState, token) => {
+    const childIds = children.map((child) => {
         return child.id;
     });
 
     const requestData = {
-        context:{
-            child_ids:childIds
+        context: {
+            child_ids: childIds
         },
-        system:{
-            set_relay_state:{
-                state:relayState
+        system: {
+            set_relay_state: {
+                state: relayState
             }
         }
     }
 
     const request = {
-        method:"passthrough",
+        method: "passthrough",
         params: {
-            deviceId:deviceId,
-            requestData:JSON.stringify(requestData)
+            deviceId: deviceId,
+            requestData: JSON.stringify(requestData)
         }
     };
 

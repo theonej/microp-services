@@ -5,18 +5,18 @@ const util = require('util');
 const TABLE_NAME = 'profiles';
 const REGION = 'us-east-1';
 
-exports.setProfile = async(profile)=>{
+exports.setProfile = async (profile) => {
     const dynamo = initDynamo();
 
     profile.profileId = profile.profileId || uuid();
 
     const request = {
-        TableName:TABLE_NAME,
-        Item:{
-            profileId:{S:profile.profileId},
-            data:{S:JSON.stringify(profile)}
+        TableName: TABLE_NAME,
+        Item: {
+            profileId: { S: profile.profileId },
+            data: { S: JSON.stringify(profile) }
         },
-        ReturnConsumedCapacity:"TOTAL"
+        ReturnConsumedCapacity: "TOTAL"
     };
 
     const putItem = util.promisify(dynamo.putItem).bind(dynamo);
@@ -28,13 +28,13 @@ exports.setProfile = async(profile)=>{
     return result;
 };
 
-exports.getProfile = async(profileId)=>{
+exports.getProfile = async (profileId) => {
     const dynamo = initDynamo();
 
     const request = {
-        TableName:TABLE_NAME,
-        Key:{
-            "profileId": {S:profileId}
+        TableName: TABLE_NAME,
+        Key: {
+            "profileId": { S: profileId }
         }
     }
 
@@ -44,8 +44,28 @@ exports.getProfile = async(profileId)=>{
     return result;
 };
 
-const initDynamo = ()=>{
-    const dynamo = new aws.DynamoDB({region:REGION});
+exports.getProfileByEmail = async (email) => {
+    const dynamo = initDynamo();
+
+    const request = {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: "#email = :email",
+        ExpressionAttributeNames: {
+            "#email": "email"
+        },
+        ExpressionAttributeValues: {
+            ":email": email
+        }
+    };
+
+    const getItem = util.promisify(dynamo.query.bind(dynamo));
+    const result = await getItem(request);
+
+    return result;
+};
+
+const initDynamo = () => {
+    const dynamo = new aws.DynamoDB({ region: REGION });
 
     return dynamo;
 };

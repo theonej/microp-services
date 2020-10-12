@@ -2,28 +2,68 @@
 
 const hapi = require('@hapi/hapi');
 const { boomify } = require('@hapi/boom');
+const handlers = require('./handlers');
 
 const server = hapi.server({
-    port:9001,
-    host:'0.0.0.0'
+    port: 9001,
+    host: '0.0.0.0'
 });
 
-const registerRoutes = async()=>{
-    
+const registerRoutes = async () => {
+
     server.route({
         method: 'GET',
-        path: '/api/profile/{profileId}',
-        handler:async(request)=>{
-            try{
-                return handlers.getProfile();
-            }catch(e){
+        path: '/api/profile/{email}/devices',
+        handler: async (request) => {
+            try {
+                const { email } = request.params;
+                return handlers.getDevices(email);
+            } catch (e) {
                 return boomify.badRequest(e);
             }
         }
-    });    
+    });            
+
+    server.route({
+        method: 'GET',
+        path: '/api/profile/{profileId}/{deviceType}',
+        handler: async (request) => {
+            try {
+                return handlers.getDevices();
+            } catch (e) {
+                return e;
+            }
+        }
+    });
+
+    server.route({
+        method: 'PUT',
+        path: '/api/devices/{deviceId}/status',
+        handler: async (request) => {
+            try {
+                const { deviceId } = request.params;
+                const { children } = request.payload;
+                const token = request.headers['microp-api-token'];
+                
+                /*
+                    children:[
+                        {
+                            id:'',
+                            status:1/0
+                        }
+                    ]
+                */
+
+                return handlers.setChildStatuses(deviceId, children, token);
+            } catch (e) {
+                console.error(e);
+                return e;
+            }
+        }
+    });
 };
 
-const init = async()=>{
+const init = async () => {
 
     await registerRoutes();
 
