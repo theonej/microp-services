@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
+const Cookies = require('js-cookie');
 
 const auth = require('../providers/auth');
 
@@ -53,8 +54,7 @@ const Template = (props)=>{
 Template.getInitialProps = async(ctx) =>{
     const {req, res} = ctx;
 
-    const cookies = new Cookies(req, res);
-    const authCookie = cookies.get('microp-auth');
+    const authCookie = Cookies.get('microp-auth');
     const redirectLocation = process.env.REDIRECT_LOCATION;
     
     return {

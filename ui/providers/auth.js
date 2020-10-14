@@ -36,6 +36,12 @@ const getTokenFromPath = (path) => {
         tokenInfo = jwt_decode(token);
 
         document.cookie = `microp-auth=${token};SameSite=Strict`;
+
+        const location = window.location;
+        const uri = `${location.origin}/?token=${token}`;
+        console.info(uri);
+
+        document.location = uri;
     }
 
     return tokenInfo;

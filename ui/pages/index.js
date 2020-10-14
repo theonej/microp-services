@@ -5,12 +5,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Switch from '@material-ui/core/Switch';
 import { Fragment } from 'react';
+import Cookies from 'cookies'
+const fetch = require('node-fetch');
 
-const Home = (props)=> {
+const auth = require('../providers/auth');
 
+const Home = (props) => {
+
+  const { profile } = props;
   console.info(props);
-
-  const {profile} = props;
 
   return (
     <div className={styles.mainPage}>
@@ -19,85 +22,75 @@ const Home = (props)=> {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      
+
       <h2>MiCrop Admin Panel</h2>
-      
-      
+
+
       <Card className={styles.rackCards}>
         <List>
 
-          {profile.racks.map(rack=>{
-            return(
+          {profile.devices.map(device => {
+            return (
               <Fragment>
 
-                 {rack.name}
+                {device.alias}
 
                 <ListItem>
 
                   <List className={styles.manualControls}>
-                    {rack.controls.map(control=>{
-                      return(
+                    {device.children.map(child => {
+                      return (
 
                         <ListItem>
                           <div>
-                            <label>{control.name}</label>
-                            <Switch color="primary" defaultChecked={control.poweredOn}></Switch>
+                            <label>{child.alias}</label>
+                            <Switch color="primary" defaultChecked={child.state===1?true:false}></Switch>
                           </div>
                         </ListItem>
-                      
+
                       );
                     })}
-                  
+
                   </List>
                 </ListItem>
               </Fragment>
             );
           })}
 
-          </List>
-        </Card>
+        </List>
+      </Card>
     </div>
   )
 }
 
-Home.getInitialProps = async(ctx)=>{
-  const profileId = '00000000-0000-0000-0000-000000000000';
-  const profile = {
-    racks:[
-      {
-        name:"rack 1",
-        controls:[
-          {
-            type:"plug",
-            name: "Top Light",
-            poweredOn:true
-          },
-          {
-            type:"plug",
-            name: "Top Drain",
-            poweredOn:false
-          },
-          {
-            type:"plug",
-            name: "Bottom Light",
-            poweredOn:true
-          },
-          {
-            type:"plug",
-            name: "Bottom Drain",
-            poweredOn:false
-          },
-          {
-            type:"plug",
-            name: "Pump",
-            poweredOn:false
-          }
-        ]
-      }
-    ]
+Home.getInitialProps = async (ctx) => {
+  const cookies = new Cookies(ctx.req, ctx.res)
+
+  const authCookie = cookies.get('microp-auth');
+
+  var profile = {
+    devices:[]
   };
 
-  return{
+  if (authCookie) {
+    const userInfo = auth.authenticateUser(authCookie);
+    console.info(`user info: ${JSON.stringify(userInfo)}`);
+
+    var uri = `http://${ctx.req.headers.host}/api/email/${encodeURIComponent(userInfo.email)}`;
+    console.info(uri);
+
+    const result = await fetch(uri, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const devices = await result.json();
+    console.info(`devices: ${JSON.stringify(devices)}`);
+
+    profile.devices = devices;
+  }
+
+  return {
     profile
   }
 }

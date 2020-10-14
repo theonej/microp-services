@@ -7,6 +7,7 @@ exports.getProfile = async (profileId)=>{
 
 exports.getDevices = async(email)=>{
     const profile = await profileRepo.getProfileByEmail(email);
+
     const user = {
         tpLinkUserName:profile.email,
         tpLinkPassword:profile.password
@@ -21,8 +22,8 @@ exports.getDevices = async(email)=>{
     });
 
     const deviceDetails = await tpLink.getDeviceDetails(smartSwitch.deviceId, loginInfo.token);
-    
-    return deviceDetails;
+
+    return [deviceDetails];
 };
 
 exports.setChildStatuses = async(deviceId, children, token)=>{

@@ -47,21 +47,31 @@ exports.getProfile = async (profileId) => {
 exports.getProfileByEmail = async (email) => {
     const dynamo = initDynamo();
 
-    const request = {
-        TableName: TABLE_NAME,
-        KeyConditionExpression: "#email = :email",
-        ExpressionAttributeNames: {
-            "#email": "email"
-        },
-        ExpressionAttributeValues: {
-            ":email": email
-        }
-    };
 
-    const getItem = util.promisify(dynamo.query.bind(dynamo));
-    const result = await getItem(request);
+    try {
+        const request = {
+            TableName: TABLE_NAME,
+            FilterExpression: "email=:email",
+            ExpressionAttributeValues: {
+                ":email": {
+                    S: email
+                }
+            }
+        };
 
-    return result;
+        console.info(`request for email profile: ${JSON.stringify(request)}`);
+        const getItem = util.promisify(dynamo.scan.bind(dynamo));
+        const result = await getItem(request);
+
+        console.info(`result for email profile: ${JSON.stringify(result)}`);
+
+        return {
+            email:result.Items[0].email.S,
+            password:result.Items[0].password.S
+        };
+    } catch (e) {
+        console.error(e);
+    }
 };
 
 const initDynamo = () => {

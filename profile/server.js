@@ -17,9 +17,12 @@ const registerRoutes = async () => {
         handler: async (request) => {
             try {
                 const { email } = request.params;
-                return handlers.getDevices(email);
+                const devices =  await handlers.getDevices(decodeURIComponent(email));
+                
+                return devices;
             } catch (e) {
-                return boomify.badRequest(e);
+                console.error(e);
+                return e;;
             }
         }
     });            

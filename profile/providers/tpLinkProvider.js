@@ -21,8 +21,8 @@ exports.login = async (userProfile) => {
     });
 
     const loginInfo = await result.json();
-    console.info(loginInfo);
-
+    console.info(loginInfo.result);
+    
     return loginInfo.result;
 };
 
@@ -47,7 +47,6 @@ exports.getDevices = async (token) => {
     });
 
     const deviceInfo = await result.json();
-    console.info(deviceInfo);
 
     return deviceInfo.result.deviceList;
 };
@@ -134,6 +133,10 @@ exports.setDeviceRelayState = async (deviceId, children, relayState, token) => {
 
     const statusResponse = await result.json();
     console.info(statusResponse);
+
+    if(statusResponse.error_code && statusResponse.error_code !== 0){
+        throw JSON.stringify(statusResponse.msg);
+    }
 
     return JSON.parse(statusResponse.result.responseData);
 };
