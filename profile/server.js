@@ -41,23 +41,23 @@ const registerRoutes = async () => {
 
     server.route({
         method: 'PUT',
-        path: '/api/devices/{deviceId}/status',
+        path: '/api/profile/{email}/devices/{deviceId}/status',
         handler: async (request) => {
             try {
-                const { deviceId } = request.params;
+                const { deviceId, email } = request.params;
                 const { children } = request.payload;
-                const token = request.headers['microp-api-token'];
                 
                 /*
                     children:[
                         {
                             id:'',
-                            status:1/0
+                            state:1/0
                         }
                     ]
                 */
 
-                return handlers.setChildStatuses(deviceId, children, token);
+               console.info(`children in service: ${JSON.stringify(request.payload)}`);
+                return handlers.setChildStatuses(email, deviceId, children);
             } catch (e) {
                 console.error(e);
                 return e;

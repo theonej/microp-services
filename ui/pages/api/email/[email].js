@@ -12,6 +12,8 @@ export default async (req, res) => {
         headers: { 'Content-Type': 'application/json' }
     });
 
+    console.info(JSON.stringify(`headers: ${JSON.stringify(result.headers)}`));
+
     const devices = await result.json();
     console.info(devices);
 

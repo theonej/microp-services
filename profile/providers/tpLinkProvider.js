@@ -13,6 +13,7 @@ exports.login = async (userProfile) => {
             terminalUUID: uuid.v4()
         }
     };
+    console.info(`request to tplink: ${JSON.stringify(request)}`);
 
     const result = await fetch(apiUrl, {
         method: 'POST',
@@ -21,7 +22,7 @@ exports.login = async (userProfile) => {
     });
 
     const loginInfo = await result.json();
-    console.info(loginInfo.result);
+    console.info(`result from tplink: ${loginInfo.result}`);
     
     return loginInfo.result;
 };
@@ -84,11 +85,11 @@ exports.turnChildDevicesOff = async (deviceId, children, token) => {
 
 exports.setChildDeviceStatuses = async (deviceId, children, token) => {
     const onChildren = children.filter((child) => {
-        return child.status === 1;
+        return child.state === 1;
     })
 
     const offChildren = children.filter((child) => {
-        return child.status === 0;
+        return child.state === 0;
     })
 
     await this.setDeviceRelayState(deviceId, onChildren, 1, token);

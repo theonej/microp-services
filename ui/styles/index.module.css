@@ -1,13 +1,26 @@
 
 .mainPage{
   padding:15px;
+  margin:auto;
+  display:inline-block;
+  text-align: center;
+  width: -moz-available;
 }
 
 .mainPage h2{
   font-weight: 200;
 }
 
+.plugList{
+  text-align: center;
+}
+
+.toggleButtonContainer{
+  width:100%;
+}
+
 .rackList{
+  padding:15px;
     list-style: none;
   }
 
@@ -16,10 +29,26 @@
 }
 
 .rackCards{
+  padding:15px;
   padding:25px;
 }
 
 .manualControls{
-  border-right:solid 1px #cfcfcf;
+  padding:15px;
   width:auto;
+}
+
+.buttonHeader{
+  display:block;
+  padding:10px;
+}
+
+.toggleButton{
+  height:200px;
+  width:200px;
+}
+
+.checkIcon{
+  height:100px;
+  width:100px;
 }

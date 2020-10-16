@@ -4,6 +4,8 @@ import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Switch from '@material-ui/core/Switch';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import CheckIcon from '@material-ui/icons/AddBox';
 import { Fragment } from 'react';
 import Cookies from 'cookies'
 const fetch = require('node-fetch');
@@ -14,6 +16,26 @@ const Home = (props) => {
 
   const { profile } = props;
   console.info(props);
+
+  const onSwitchToggled = async (deviceId, child) => {
+    child.state = child.state == 1 ? 0 : 1;
+    
+    console.info(`device: ${deviceId}`);
+    console.info(`child: ${JSON.stringify(child)}`);
+
+    const uri = `/api/device/${deviceId}?email=${encodeURIComponent(profile.userInfo.email)}`;
+    console.info(`email uri: ${uri}`);
+
+    const result = await fetch(uri, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify(child)
+    });
+
+    console.info(`set device status result: ${JSON.stringify(result)}`);
+    const status = await result.json();
+    console.info(`set device status result: ${JSON.stringify(status)}`);
+  }
 
   return (
     <div className={styles.mainPage}>
@@ -26,7 +48,7 @@ const Home = (props) => {
       <h2>MiCrop Admin Panel</h2>
 
 
-      <Card className={styles.rackCards}>
+      <div className={styles.plugList}>
         <List>
 
           {profile.devices.map(device => {
@@ -37,17 +59,24 @@ const Home = (props) => {
 
                 <ListItem>
 
-                  <List className={styles.manualControls}>
+                  <List>
                     {device.children.map(child => {
                       return (
-
-                        <ListItem>
-                          <div>
-                            <label>{child.alias}</label>
-                            <Switch color="primary" defaultChecked={child.state===1?true:false}></Switch>
-                          </div>
-                        </ListItem>
-
+                        <div className={styles.manualControls}>
+                          <ListItem className={styles.toggleButtonContainer}>
+                            <div>
+                              <label className={styles.buttonHeader}>{child.alias}</label>
+                              <ToggleButton
+                                value="check"
+                                defaultSelected={child.state === 1 ? true : false}
+                                onChange={()=>{onSwitchToggled(device.deviceId, child)}}
+                                className={styles.toggleButton}
+                              >
+                                <CheckIcon className={styles.checkIcon} fontSize="large" />
+                              </ToggleButton>
+                            </div>
+                          </ListItem>
+                        </div>
                       );
                     })}
 
@@ -58,7 +87,7 @@ const Home = (props) => {
           })}
 
         </List>
-      </Card>
+      </div>
     </div>
   )
 }
@@ -69,14 +98,18 @@ Home.getInitialProps = async (ctx) => {
   const authCookie = cookies.get('microp-auth');
 
   var profile = {
-    devices:[]
+    devices: [],
+    userInfo:{}
   };
 
   if (authCookie) {
     const userInfo = auth.authenticateUser(authCookie);
+    profile.userInfo = userInfo;
     console.info(`user info: ${JSON.stringify(userInfo)}`);
 
-    var uri = `http://${ctx.req.headers.host}/api/email/${encodeURIComponent(userInfo.email)}`;
+    var host = ctx.req.headers.host === 'backend' ? '0.0.0.0' : ctx.req.headers.host;
+
+    var uri = `http://${host}/api/email/${encodeURIComponent(userInfo.email)}`;
     console.info(uri);
 
     const result = await fetch(uri, {

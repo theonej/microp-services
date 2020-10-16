@@ -67,6 +67,7 @@ exports.getProfileByEmail = async (email) => {
 
         return {
             email:result.Items[0].email.S,
+            deviceUserName:result.Items[0].deviceUserName.S,
             password:result.Items[0].password.S
         };
     } catch (e) {

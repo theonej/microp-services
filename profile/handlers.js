@@ -2,6 +2,7 @@ const profileRepo = require('./repository/dynamoProfileRepository');
 const tpLink = require('./providers/tpLinkProvider');
 
 exports.getProfile = async (profileId)=>{
+
     return profileRepo.getProfile(profileId);
 };
 
@@ -9,11 +10,12 @@ exports.getDevices = async(email)=>{
     const profile = await profileRepo.getProfileByEmail(email);
 
     const user = {
-        tpLinkUserName:profile.email,
+        tpLinkUserName:profile.deviceUserName,
         tpLinkPassword:profile.password
     };
 
     const loginInfo = await tpLink.login(user);
+    console.info(`\n\nloginInfo: ${loginInfo}`);
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
@@ -26,8 +28,18 @@ exports.getDevices = async(email)=>{
     return [deviceDetails];
 };
 
-exports.setChildStatuses = async(deviceId, children, token)=>{
-    const status = await tpLink.setChildDeviceStatuses(deviceId, children, token);
+exports.setChildStatuses = async(email, deviceId, children)=>{
+    const profile = await profileRepo.getProfileByEmail(email);
+
+    const user = {
+        tpLinkUserName:profile.deviceUserName,
+        tpLinkPassword:profile.password
+    };
+
+    const loginInfo = await tpLink.login(user);
+    console.info(`\n\nloginInfo: ${loginInfo}`);
+
+    const status = await tpLink.setChildDeviceStatuses(deviceId, children, loginInfo.token);
     console.info(status);
 
     return status;
