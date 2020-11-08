@@ -7,7 +7,6 @@ export default async (req, res) => {
 
    console.info(`child to service: ${child}`);
 
-   console.info(`the motherfucking email: ${email}`);
    const uri = `${process.env.BASE_API_URL}/profile/${encodeURIComponent(email)}/devices/${deviceId}/status`;
     console.info(`email uri: ${uri}`);
 

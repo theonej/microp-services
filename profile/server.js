@@ -12,11 +12,28 @@ const server = hapi.server({
 const registerRoutes = async () => {
 
     server.route({
+        method: ['GET', 'POST'],
+        path: '/api/profile/{any*}',
+        handler: (request, h) => {
+            const accept = request.headers.accept
+
+            if (accept && accept.match(/json/)) {
+                return boom.notFound('This resource is not available.')
+            }
+
+            return request.path;
+        }
+    })
+
+    server.route({
         method: 'GET',
         path: '/api/profile/{email}/devices',
         handler: async (request) => {
             try {
                 const { email } = request.params;
+                
+                console.info(`getting devices for ${email}`);
+                
                 const devices =  await handlers.getDevices(decodeURIComponent(email));
                 
                 return devices;

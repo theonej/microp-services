@@ -17,43 +17,8 @@ const auth = require('../providers/auth');
 const Home = (props) => {
 
   const [profile, setProfile] = useState(props.profile);
-  //const { profile} =props;
+
   console.info(props);
-
-  const updateDevices = async () => {
-    const uri = `/api/email/${encodeURIComponent(profile.userInfo.email)}`;
-    console.info(uri);
-
-    const result = await fetch(uri, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    const devices = await result.json();
-    profile.devices = devices;
-    console.info(JSON.stringify(profile));
-
-    setProfile(Object.assign({}, profile));
-  }
-
-  const onSwitchToggled = async (deviceId, child) => {
-    child.state = child.state == 1 ? 0 : 1;
-
-    console.info(`device: ${deviceId}`);
-    console.info(`child: ${JSON.stringify(child)}`);
-
-    let uri = `/api/device/${deviceId}?email=${encodeURIComponent(profile.userInfo.email)}`;
-
-    let result = await fetch(uri, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(child)
-    });
-
-    const status = await result.json();
-
-    await updateDevices();
-  }
 
 
   const onPresetSelected = async (deviceId, presetId) => {
@@ -70,9 +35,8 @@ const Home = (props) => {
 
     const status = await result.json();
 
-    await updateDevices();
+    window.location = "./manual";
   }
-
 
   return (
     <div className={styles.mainPage}>
@@ -80,7 +44,7 @@ const Home = (props) => {
         <title>MiCrop - System Management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
       <div className={styles.plugList}>
         <List>
 
@@ -95,7 +59,13 @@ const Home = (props) => {
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
                         <div>
-                          <a href="./preset">Presets</a>
+                          <ToggleButton
+                            value="check"
+                            onChange={() => { onPresetSelected(device.deviceId, 'all-off') }}
+                            className={styles.toggleButton}
+                          >
+                            <label className={styles.buttonHeader}>All Off</label>
+                          </ToggleButton>
                         </div>
                       </ListItem>
                     </div>
@@ -103,7 +73,55 @@ const Home = (props) => {
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
                         <div>
-                          <a href="./manual">Manual Controls</a>
+                          <ToggleButton
+                            value="check"
+                            onChange={() => { onPresetSelected(device.deviceId, 'flood-top') }}
+                            className={styles.toggleButton}
+                          >
+                            <label className={styles.buttonHeader}>Flood Top Tray</label>
+                          </ToggleButton>
+                        </div>
+                      </ListItem>
+                    </div>
+
+                    <div className={styles.manualControls}>
+                      <ListItem className={styles.toggleButtonContainer}>
+                        <div>
+                          <ToggleButton
+                            value="check"
+                            onChange={() => { onPresetSelected(device.deviceId, 'drain-top') }}
+                            className={styles.toggleButton}
+                          >
+                            <label className={styles.buttonHeader}>Drain Top Tray</label>
+                          </ToggleButton>
+                        </div>
+                      </ListItem>
+                    </div>
+
+                    <div className={styles.manualControls}>
+                      <ListItem className={styles.toggleButtonContainer}>
+                        <div>
+                          <ToggleButton
+                            value="check"
+                            onChange={() => { onPresetSelected(device.deviceId, 'flood-bottom') }}
+                            className={styles.toggleButton}
+                          >
+                            <label className={styles.buttonHeader}>Flood Bottom Tray</label>
+                          </ToggleButton>
+                        </div>
+                      </ListItem>
+                    </div>
+
+                    <div className={styles.manualControls}>
+                      <ListItem className={styles.toggleButtonContainer}>
+                        <div>
+                          <ToggleButton
+                            value="check"
+                            onChange={() => { onPresetSelected(device.deviceId, 'drain-bottom') }}
+                            className={styles.toggleButton}
+                          >
+                            <label className={styles.buttonHeader}>Drain Bottom Tray</label>
+                          </ToggleButton>
                         </div>
                       </ListItem>
                     </div>

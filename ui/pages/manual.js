@@ -55,24 +55,7 @@ const Home = (props) => {
     await updateDevices();
   }
 
-
-  const onPresetSelected = async (deviceId, presetId) => {
-    let uri = `/api/preset/${presetId}?deviceId=${deviceId}&email=${encodeURIComponent(profile.userInfo.email)}`;
-
-    console.info('sending preset request');
-    let result = await fetch(uri, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(profile.devices[0].children)
-    });
-
-    console.info('sent preset request');
-
-    const status = await result.json();
-
-    await updateDevices();
-  }
-
+  setTimeout(updateDevices, 5000);
 
   return (
     <div className={styles.mainPage}>
@@ -92,21 +75,25 @@ const Home = (props) => {
 
                   <List>
 
-                    <div className={styles.manualControls}>
-                      <ListItem className={styles.toggleButtonContainer}>
-                        <div>
-                          <a href="./preset">Presets</a>
+                    {device.children.map(child => {
+                      return (
+                        <div className={styles.manualControls}>
+                          <ListItem className={styles.toggleButtonContainer}>
+                            <div>
+                              <label className={styles.buttonHeader}>{child.alias}</label>
+                              <ToggleButton
+                                value="check"
+                                selected={child.state == 1 ? true : false}
+                                onChange={() => { onSwitchToggled(device.deviceId, child) }}
+                                className={styles.toggleButton}
+                              >
+                                <CheckIcon className={styles.checkIcon} fontSize="large" />
+                              </ToggleButton>
+                            </div>
+                          </ListItem>
                         </div>
-                      </ListItem>
-                    </div>
-
-                    <div className={styles.manualControls}>
-                      <ListItem className={styles.toggleButtonContainer}>
-                        <div>
-                          <a href="./manual">Manual Controls</a>
-                        </div>
-                      </ListItem>
-                    </div>
+                      );
+                    })}
 
                   </List>
                 </ListItem>
