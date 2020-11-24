@@ -45,7 +45,7 @@ const Home = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className={styles.plugList}>
+      <div className={styles.controlList}>
         <List>
 
           {profile.devices.map(device => {
@@ -54,11 +54,11 @@ const Home = (props) => {
 
                 <ListItem>
 
-                  <List>
+                  <List className={styles.toggleList}>
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <div className={styles.buttonContainer}>
                           <ToggleButton
                             value="check"
                             onChange={() => { onPresetSelected(device.deviceId, 'all-off') }}
@@ -72,7 +72,7 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <div className={styles.buttonContainer}>
                           <ToggleButton
                             value="check"
                             onChange={() => { onPresetSelected(device.deviceId, 'flood-top') }}
@@ -86,7 +86,7 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <div className={styles.buttonContainer}>
                           <ToggleButton
                             value="check"
                             onChange={() => { onPresetSelected(device.deviceId, 'drain-top') }}
@@ -100,7 +100,7 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <div className={styles.buttonContainer}>
                           <ToggleButton
                             value="check"
                             onChange={() => { onPresetSelected(device.deviceId, 'flood-bottom') }}
@@ -114,7 +114,7 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <div className={styles.buttonContainer}>
                           <ToggleButton
                             value="check"
                             onChange={() => { onPresetSelected(device.deviceId, 'drain-bottom') }}

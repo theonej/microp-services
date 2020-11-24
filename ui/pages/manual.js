@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/index.module.css';
-import Card from '@material-ui/core/Card';
+import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Switch from '@material-ui/core/Switch';
@@ -13,6 +13,60 @@ import { useState, setState } from 'react';
 const fetch = require('node-fetch');
 
 const auth = require('../providers/auth');
+
+
+const IOSSwitch = withStyles((theme) => ({
+  root: {
+    width: 100,
+    height: 26,
+    padding: 0,
+    margin: theme.spacing(1),
+  },
+  switchBase: {
+    padding: 1,
+    '&$checked': {
+      transform: 'translateX(74px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#fc0317',
+        opacity: 1,
+        border: 'none',
+      },
+    },
+    '&$focusVisible $thumb': {
+      color: '#52d869',
+      border: '6px solid #fff',
+    },
+  },
+  thumb: {
+    width: 24,
+    height: 24,
+  },
+  track: {
+    borderRadius: 26 / 2,
+    border: `1px solid ${theme.palette.grey[400]}`,
+    backgroundColor: theme.palette.grey[50],
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  checked: {},
+  focusVisible: {},
+}))(({ classes, ...props }) => {
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked,
+      }}
+      {...props}
+    />
+  );
+});
 
 const Home = (props) => {
 
@@ -56,7 +110,7 @@ const Home = (props) => {
   }
 
   setTimeout(updateDevices, 5000);
-
+  
   return (
     <div className={styles.mainPage}>
       <Head>
@@ -64,7 +118,7 @@ const Home = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.plugList}>
+      <div className={styles.controlList}>
         <List>
 
           {profile.devices.map(device => {
@@ -73,22 +127,23 @@ const Home = (props) => {
 
                 <ListItem>
 
-                  <List>
+                  <List className={styles.toggleList}>
 
                     {device.children.map(child => {
                       return (
                         <div className={styles.manualControls}>
                           <ListItem className={styles.toggleButtonContainer}>
-                            <div>
+                            <div className={styles.buttonContainer}>
                               <label className={styles.buttonHeader}>{child.alias}</label>
-                              <ToggleButton
+                              <IOSSwitch
                                 value="check"
-                                selected={child.state == 1 ? true : false}
+                                defaultChecked={child.state == 1 ? true : false}
                                 onChange={() => { onSwitchToggled(device.deviceId, child) }}
-                                className={styles.toggleButton}
+                                className={styles.toggleSwitch}
+                                color="primary"
                               >
                                 <CheckIcon className={styles.checkIcon} fontSize="large" />
-                              </ToggleButton>
+                              </IOSSwitch>
                             </div>
                           </ListItem>
                         </div>

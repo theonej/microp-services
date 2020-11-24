@@ -1,8 +1,8 @@
 
+
 .mainPage{
   padding:15px;
   margin:auto;
-  display:inline-block;
   text-align: center;
   width: -moz-available;
 }
@@ -15,8 +15,18 @@
   text-align: center;
 }
 
-.toggleButtonContainer{
+.controlList{
+  font-size: large;
+  
+  border:solid 1px #a9a9a9;
+  border-radius: 18px;
+
+  display:inherit;
   width:100%;
+}
+
+.toggleButtonContainer{
+  width:100% !important;
 }
 
 .rackList{
@@ -33,22 +43,43 @@
   padding:25px;
 }
 
-.manualControls{
-  padding:15px;
-  width:auto;
+.buttonContainer{
+  margin:auto;
+}
+
+.toggleList
+{
+  width:100%;
 }
 
 .buttonHeader{
   display:block;
   padding:10px;
+  color:#640000 !important;
 }
 
 .toggleButton{
-  height:200px;
+  height:100px;
   width:200px;
+}
+
+.toggleSwitch{
+  height:135px;
+  width:100px;
 }
 
 .checkIcon{
   height:100px;
   width:100px;
+}
+
+
+.selectButton{
+  font-size: large;
+  padding:15px 5px;
+  color:#ff0000;
+}
+
+.selectIcon{
+  color:#ff0000;
 }

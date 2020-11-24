@@ -1,11 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/index.module.css';
-import Card from '@material-ui/core/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Switch from '@material-ui/core/Switch';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import CheckIcon from '@material-ui/icons/AddBox';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
+import BuildIcon from '@material-ui/icons/BuildOutlined';
 import { Fragment } from 'react';
 import Cookies from 'cookies'
 import { useState, setState } from 'react';
@@ -81,7 +79,7 @@ const Home = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.plugList}>
+      <div className={styles.controlList}>
         <List>
 
           {profile.devices.map(device => {
@@ -94,7 +92,8 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                      <AutorenewIcon className={styles.selectIcon}/>
+                        <div className={styles.selectButton}>
                           <a href="./preset">Presets</a>
                         </div>
                       </ListItem>
@@ -102,7 +101,8 @@ const Home = (props) => {
 
                     <div className={styles.manualControls}>
                       <ListItem className={styles.toggleButtonContainer}>
-                        <div>
+                        <BuildIcon className={styles.selectIcon}/>
+                        <div className={styles.selectButton}>
                           <a href="./manual">Manual Controls</a>
                         </div>
                       </ListItem>

@@ -29,8 +29,7 @@ const Template = (props) => {
             </Head>
             <div className="header">
                 <a href="./">
-                    <HomeIcon fontSize="small" />
-                    <label className="header-label">MiCrop Admin Panel</label>
+                    <img className="header-image" src="/logoTomato.png"></img>
                 </a>
 
             </div>
@@ -61,6 +60,11 @@ const Template = (props) => {
 
                 .header-label{
                     padding:10px;
+                }
+
+
+                .header-image{
+                    height:35px;
                 }
 
             `}</style>
