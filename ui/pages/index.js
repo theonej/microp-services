@@ -9,15 +9,12 @@ import Cookies from 'cookies'
 import { useState, setState } from 'react';
 
 const fetch = require('node-fetch');
-
 const auth = require('../providers/auth');
 
 const Home = (props) => {
 
   const [profile, setProfile] = useState(props.profile);
-  //const { profile} =props;
-  console.info(props);
-
+  
   const updateDevices = async () => {
     const uri = `/api/email/${encodeURIComponent(profile.userInfo.email)}`;
     console.info(uri);
@@ -29,7 +26,6 @@ const Home = (props) => {
 
     const devices = await result.json();
     profile.devices = devices;
-    console.info(JSON.stringify(profile));
 
     setProfile(Object.assign({}, profile));
   }
