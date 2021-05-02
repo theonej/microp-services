@@ -15,7 +15,7 @@ const Template = (props) => {
     const userInfo = auth.authenticateUser(authCookie, path);
     console.info(userInfo);
 
-    if (!userInfo.authenticated) {
+    if (!userInfo || !userInfo.authenticated) {
         console.info(`redirecting to ${redirectLocation}`);
         try {
             window.location = redirectLocation;
