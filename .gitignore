@@ -106,6 +106,5 @@ dist
 .env
 
 **/next.config.js
-**/env.local
 
 test.js
