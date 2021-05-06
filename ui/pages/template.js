@@ -15,12 +15,12 @@ const Template = (props) => {
     const userInfo = auth.authenticateUser(authCookie, path);
     console.info(userInfo);
 
-    if (!userInfo.authenticated) {
-        console.info(`redirecting to ${redirectLocation}`);
-        try {
-            window.location = redirectLocation;
-        } catch (e) {/*noop*/ }
-    }
+    // if (!userInfo.authenticated) {
+    //     console.info(`redirecting to ${redirectLocation}`);
+    //     try {
+    //         window.location = redirectLocation;
+    //     } catch (e) {/*noop*/ }
+    // }
 
     return (
         <div className="layout">
