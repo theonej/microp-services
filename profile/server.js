@@ -87,6 +87,7 @@ const registerRoutes = async () => {
         path: '/api/locations',
         handler: async (request) => {
             try {
+                console.info('getting all locations');
                 const locations =  await handlers.getLocations();
                 
                 return locations;

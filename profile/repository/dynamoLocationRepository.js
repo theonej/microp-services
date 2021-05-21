@@ -35,6 +35,8 @@ exports.getLocations = async () => {
             TableName: TABLE_NAME
         };
 
+        console.info(JSON.stringify(request));
+        
         const getItem = util.promisify(dynamo.scan.bind(dynamo));
         const result = await getItem(request);
 

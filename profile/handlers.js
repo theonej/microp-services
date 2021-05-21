@@ -3,17 +3,17 @@ const rackRepo = require('./repository/dynamoRackRepository');
 const locationRepo = require('./repository/dynamoLocationRepository');
 const tpLink = require('./providers/tpLinkProvider');
 
-exports.getProfile = async (profileId)=>{
+exports.getProfile = async (profileId) => {
 
     return profileRepo.getProfile(profileId);
 };
 
-exports.getDevices = async(email)=>{
+exports.getDevices = async (email) => {
     const profile = await profileRepo.getProfileByEmail(email);
 
     const user = {
-        tpLinkUserName:profile.deviceUserName,
-        tpLinkPassword:profile.password
+        tpLinkUserName: profile.deviceUserName,
+        tpLinkPassword: profile.password
     };
 
     const loginInfo = await tpLink.login(user);
@@ -21,7 +21,7 @@ exports.getDevices = async(email)=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    const smartSwitch = devices.find(device=>{
+    const smartSwitch = devices.find(device => {
         return device.deviceName = 'Wi-Fi Smart Power Strip';
     });
 
@@ -30,12 +30,12 @@ exports.getDevices = async(email)=>{
     return [deviceDetails];
 };
 
-exports.setChildStatuses = async(email, deviceId, children)=>{
+exports.setChildStatuses = async (email, deviceId, children) => {
     const profile = await profileRepo.getProfileByEmail(email);
 
     const user = {
-        tpLinkUserName:profile.deviceUserName,
-        tpLinkPassword:profile.password
+        tpLinkUserName: profile.deviceUserName,
+        tpLinkPassword: profile.password
     };
 
     const loginInfo = await tpLink.login(user);
@@ -47,22 +47,24 @@ exports.setChildStatuses = async(email, deviceId, children)=>{
     return status;
 };
 
-exports.getLocations = async()=>{
-    return locationRepo.getLocations();
+exports.getLocations = async () => {
+    const locations = await locationRepo.getLocations();
+
+    return locations;
 };
 
-exports.getRacks = async(locationId)=>{
+exports.getRacks = async (locationId) => {
     const racks = await rackRepo.getRacks(locationId);
 
     return racks;
 };
 
-exports.getRack = async(locationId, rackId)=>{
+exports.getRack = async (locationId, rackId) => {
     const rack = await rackRepo.getRack(locationId, rackId);
 
     return rack;
 };
 
-exports.saveRack = async(rack)=>{
+exports.saveRack = async (rack) => {
     return await rackRepo.setRack(rack);
 };
