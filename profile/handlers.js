@@ -1,4 +1,6 @@
 const profileRepo = require('./repository/dynamoProfileRepository');
+const rackRepo = require('./repository/dynamoRackRepository');
+const locationRepo = require('./repository/dynamoLocationRepository');
 const tpLink = require('./providers/tpLinkProvider');
 
 exports.getProfile = async (profileId)=>{
@@ -43,4 +45,24 @@ exports.setChildStatuses = async(email, deviceId, children)=>{
     console.info(status);
 
     return status;
+};
+
+exports.getLocations = async()=>{
+    return locationRepo.getLocations();
+};
+
+exports.getRacks = async(locationId)=>{
+    const racks = await rackRepo.getRacks(locationId);
+
+    return racks;
+};
+
+exports.getRack = async(locationId, rackId)=>{
+    const rack = await rackRepo.getRack(locationId, rackId);
+
+    return rack;
+};
+
+exports.saveRack = async(rack)=>{
+    return await rackRepo.setRack(rack);
 };

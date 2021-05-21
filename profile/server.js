@@ -81,6 +81,78 @@ const registerRoutes = async () => {
             }
         }
     });
+
+    server.route({
+        method: 'GET',
+        path: '/api/locations',
+        handler: async (request) => {
+            try {
+                const locations =  await handlers.getLocations();
+                
+                return locations;
+            } catch (e) {
+                console.error(e);
+                return e;
+            }
+        }
+    });  
+
+    server.route({
+        method: 'GET',
+        path: '/api/locations/{locationId}/racks',
+        handler: async (request) => {
+            try {
+                const { locationId } = request.params;
+                const racks =  await handlers.getRacks(locationId);
+                
+                return racks;
+            } catch (e) {
+                console.error(e);
+                return e;
+            }
+        }
+    });  
+
+    server.route({
+        method: 'GET',
+        path: '/api/locations/{locationId}/racks/{rackId}',
+        handler: async (request) => {
+            try {
+                const { locationId, rackId } = request.params;
+                const rack =  await handlers.getRack(locationId, rackId);
+                
+                return rack;
+            } catch (e) {
+                console.error(e);
+                return e;
+            }
+        }
+    });  
+
+    server.route({
+        method: 'PUT',
+        path: '/api/locations/{locationId}/racks/{rackId}',
+        handler: async (request) => {
+            try {
+                
+                const { locationId, rackId } = request.params;
+                
+                const rack = request.payload;
+                console.info(request.payload);
+
+                if(rack.rackId !== rackId || rack.locationId !== locationId){
+                    throw 'Rack id or location id do not match.  cannot save rack';
+                }
+
+                await handlers.saveRack(rack);
+                
+                return true
+            } catch (e) {
+                console.error(e);
+                return e;
+            }
+        }
+    });  
 };
 
 const init = async () => {

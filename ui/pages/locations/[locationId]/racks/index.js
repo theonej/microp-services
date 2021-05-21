@@ -1,7 +1,8 @@
-import styles from '../../styles/racks.module.css';
+import styles from '../../../../styles/racks.module.css';
+const rackProvider = require('../../../../providers/rackProvider');
 
 import Card from '@material-ui/core/Card';
-const fetch = require('node-fetch');
+import Button from '@material-ui/core/Button';
 
 const Racks = (props) => {
     const { racks } = props;
@@ -11,7 +12,7 @@ const Racks = (props) => {
         <div>
             <h1>Racks</h1>
             {
-                racks.map((rack) => {
+                racks.sort((a, b) => { return a.name > b.name }).map((rack) => {
                     return (
                         <Card className={styles.borderedDiv}>
                             <h2>{rack.name}</h2>
@@ -26,14 +27,13 @@ const Racks = (props) => {
 
 
                                                 {
-                                                    tray.plantTypes.map((plantType) => {
+                                                    tray.plants.map((plant) => {
                                                         return (
-                                                            <li>{plantType}</li>
+                                                            <li>{plant}</li>
                                                         )
 
                                                     }
                                                     )
-
                                                 }
                                             </ul>
 
@@ -41,6 +41,8 @@ const Racks = (props) => {
                                     )
                                 })
                             }
+
+                            <Button onClick={() => { window.location = `/locations/${rack.locationId}/racks/${rack.rackId}` }} color='primary'>Show Details</Button>
                         </Card>
                     )
                 })
@@ -51,17 +53,8 @@ const Racks = (props) => {
 
 Racks.getInitialProps = async (ctx) => {
 
-    var host = ctx.req.headers.host === 'backend' ? '0.0.0.0' : ctx.req.headers.host;
+    const racks = await rackProvider.getRacks(ctx);
 
-    var uri = `http://${host}/api/rack/`;
-    console.info(uri);
-
-    const result = await fetch(uri, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    const racks = await result.json();
     console.info(`racks: ${JSON.stringify(racks)}`);
 
     return {

@@ -19,7 +19,7 @@ it('logs into tpLink and gets devices', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 });
 
 
@@ -30,7 +30,7 @@ it('logs into tpLink and gets device details', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -49,7 +49,7 @@ it('logs into tpLink and turn on all children', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -71,7 +71,7 @@ it('logs into tpLink and turn off all children', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -94,7 +94,7 @@ it('logs into tpLink and turn on all lights', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -120,7 +120,7 @@ it('logs into tpLink and turn off all lights', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -146,7 +146,7 @@ it('logs into tpLink and turn on pump', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';
@@ -170,7 +170,7 @@ it('logs into tpLink and turn off pump', async()=>{
 
     const devices = await tpLink.getDevices(loginInfo.token);
 
-    expect(devices.length).toBe(5);
+    expect(devices.length).toBe(7);
 
     const smartSwitch = devices.find(device=>{
         return device.deviceName = 'Wi-Fi Smart Power Strip';

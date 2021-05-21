@@ -9,3 +9,31 @@
     height:500px;
     width:300px;
 }
+.inputGroup{
+    padding:10px 3px;
+    border: solid 1px #dedede;
+}
+
+.inputGroup label{
+    margin: 10px 15px;
+    min-width:100px;
+    float:left;
+}
+
+.notes{
+    margin-top:15px;
+    padding:15px 5px;
+    border:solid 1px #dedede;
+    max-width:1500px;
+}
+
+.notes textarea{
+    width:100%;
+}
+
+.table{
+    margin-top:15px;
+    padding:15px 5px;
+    border:solid 1px #dedede;
+    max-width:1500px;
+}
